@@ -6,7 +6,7 @@ set s1;
 
 # Parametros (constantes)
 # Distancias entre ESTADOS
-param Dij{i in ESTADOS, j in ESTADOS: i <> j};
+param Dij{i in ESTADOS, j in ESTADOS};
 
 # DA i : variable continua que indica la distancia del datacenter A al estado
 # i. (ı́dem para datacenter B)
@@ -16,17 +16,15 @@ param DBi{i in ESTADOS};
 # M : valor mayor a cualquier distancia posible.
 param M := 10000;
 
-*********
 
 # all distances
-table tab_distances IN "CSV" "distances.csv" : s <- [state1, state2], Dij~distance;
+table tab_distances IN "CSV" "distances2.csv" : s <- [state1, state2], Dij~distance;
 
 # distances from datacenters A and B, which correspond to states 
 # of Florida and Oregon respectively.
 table tab_florida_distances IN "CSV" "florida_distances.csv" : ESTADOS <- [state2], DAi~distance;
 table tab_oregon_distances IN "CSV" "oregon_distances.csv" : s1 <- [state2], DBi~distance;
 
-********
 # Variables
 # Li: variable continua que indica la latencia correspondiente al estado i
 var Li{i in ESTADOS} >= 0;
@@ -62,14 +60,14 @@ s.t. cota_sup_dcC{i in ESTADOS}: Li[i] <= DCi[i];
 s.t. cota_sup_dcD{i in ESTADOS}: Li[i] <= DDi[i];
 s.t. cota_sup_dcE{i in ESTADOS}: Li[i] <= DEi[i];
 
-s.t. cota_inf_dcA{i in ESTADOS}: Li[i] >= DAi[i] - M;
-s.t. cota_inf_dcB{i in ESTADOS}: Li[i] >= DBi[i] - M;
-s.t. cota_inf_dcC{i in ESTADOS}: Li[i] >= DCi[i] - M;
-s.t. cota_inf_dcD{i in ESTADOS}: Li[i] >= DDi[i] - M;
-s.t. cota_inf_dcE{i in ESTADOS}: Li[i] >= DEi[i] - M;
+s.t. cota_inf_dcA{i in ESTADOS}: Li[i] >= DAi[i] - M * YAi[i];
+s.t. cota_inf_dcB{i in ESTADOS}: Li[i] >= DBi[i] - M * YBi[i];
+s.t. cota_inf_dcC{i in ESTADOS}: Li[i] >= DCi[i] - M * YCi[i];
+s.t. cota_inf_dcD{i in ESTADOS}: Li[i] >= DDi[i] - M * YDi[i];
+s.t. cota_inf_dcE{i in ESTADOS}: Li[i] >= DEi[i] - M * YEi[i];
 
 # sumatorioa de YXi debe ser 4
-s.t. total_datacenters: sum{i in ESTADOS} YAi[i] + sum{i in ESTADOS} YBi[i] + sum{i in ESTADOS} YCi[i] + sum{i in ESTADOS} YDi[i] + sum{i in ESTADOS} YEi[i] = 4;
+s.t. total_datacenters{i in ESTADOS}: YAi[i] + YBi[i] + YCi[i] + YDi[i] + YEi[i] = 4;
 
 # Asociacion de datacenter a estado
 s.t. asoc_dcC: sum{i in ESTADOS} YCei[i] = 1;
