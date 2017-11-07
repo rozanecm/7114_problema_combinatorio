@@ -18,12 +18,12 @@ param M := 10000;
 
 
 # all distances
-table tab_distances IN "CSV" "distances2.csv" : s <- [state1, state2], Dij~distance;
+table tab_distances IN "CSV" "distances3.csv" : s <- [state1, state2], Dij~distance;
 
 # distances from datacenters A and B, which correspond to states 
 # of Florida and Oregon respectively.
-table tab_florida_distances IN "CSV" "florida_distances.csv" : ESTADOS <- [state2], DAi~distance;
-table tab_oregon_distances IN "CSV" "oregon_distances.csv" : s1 <- [state2], DBi~distance;
+table tab_florida_distances IN "CSV" "florida_distances3.csv" : ESTADOS <- [state2], DAi~distance;
+table tab_oregon_distances IN "CSV" "oregon_distances3.csv" : s1 <- [state2], DBi~distance;
 
 # Variables
 # Li: variable continua que indica la latencia correspondiente al estado i
