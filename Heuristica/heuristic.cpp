@@ -1,6 +1,6 @@
 #include <iostream>
 #include <map>
-#include <climits>
+#include <cfloat>
 
 void get_problem_values(int &num_of_states, int &num_of_datacenters){
 	std::cout << "Insert number of states" << std::endl;
@@ -9,10 +9,10 @@ void get_problem_values(int &num_of_states, int &num_of_datacenters){
 	std::cin >> num_of_datacenters;
 }
 
-void fill_distances_matrix(int num_of_states, std::map<int, std::map<int, int> > &distances){
+void fill_distances_matrix(int num_of_states, std::map<int, std::map<int, double> > &distances){
 	for(int i = 1; i <= num_of_states; ++i){
 		for(int j = i + 1; j <= num_of_states; ++j){
-			int current_distance;
+			double current_distance;
 			std::cout << "insert distance between state " << i << " and " << j << std::endl;
 			std::cin >> current_distance;
 			distances[i][j] = current_distance;
@@ -23,13 +23,13 @@ void fill_distances_matrix(int num_of_states, std::map<int, std::map<int, int> >
 	}
 }
 
-int calculate_current_latency(int num_of_states, const std::map<int, int> &datacenters, const std::map<int, std::map<int, int> > &distances){
-	int total_latency = 0;
+double calculate_current_latency(int num_of_states, const std::map<int, int> &datacenters, const std::map<int, std::map<int, double> > &distances){
+	double total_latency = 0;
 	/* for each state, check the minimum distance to each datacenter */
 	for(int i = 1; i <= num_of_states; ++i){
-		int this_state_lat = INT_MAX;
+		double this_state_lat = DBL_MAX;
 		for(auto it = datacenters.begin(); it != datacenters.end(); ++it){
-			int read_lat = distances.at(i).at(it->second);
+			double read_lat = distances.at(i).at(it->second);
 			if (read_lat < this_state_lat){
 				this_state_lat = read_lat;
 			}
@@ -39,7 +39,7 @@ int calculate_current_latency(int num_of_states, const std::map<int, int> &datac
 	return total_latency;
 }
 
-void manage_manually_allocated_dataceneters(int num_of_states, int &num_of_manually_allocated_datacenters, std::map<int, int> &datacenters, std::map<int, std::map<int, int> > &distances){
+void manage_manually_allocated_dataceneters(int num_of_states, int &num_of_manually_allocated_datacenters, std::map<int, int> &datacenters, std::map<int, std::map<int, double> > &distances){
 	std::cout << "How many datacenters are manually allocated?" << std::endl;
 	std::cin >> num_of_manually_allocated_datacenters;
 
@@ -62,9 +62,9 @@ bool state_already_has_datacenter(int state, const std::map<int, int> &datacente
 	return false;
 }
 
-int locate_new_datacenter(int num_of_datacenter, int num_of_states, std::map<int, int> &datacenters, const std::map<int, std::map<int, int> > &distances){
+int locate_new_datacenter(int num_of_datacenter, int num_of_states, std::map<int, int> &datacenters, const std::map<int, std::map<int, double> > &distances){
 	/* returns number of state which minimizes latency */
-	int current_lat = INT_MAX;
+	double current_lat = DBL_MAX;
 	int state_that_minimizes_lat;
 	for(int i = 1; i <= num_of_states; ++i){
 		if (!state_already_has_datacenter(i, datacenters)){
@@ -77,7 +77,7 @@ int locate_new_datacenter(int num_of_datacenter, int num_of_states, std::map<int
 	return state_that_minimizes_lat;
 }
 
-void locate_remaining_datacenters(int num_of_states, int num_of_datacenters, int num_of_manually_allocated_datacenters, std::map<int, int> &datacenters, std::map<int, std::map<int, int> > &distances){
+void locate_remaining_datacenters(int num_of_states, int num_of_datacenters, int num_of_manually_allocated_datacenters, std::map<int, int> &datacenters, std::map<int, std::map<int, double> > &distances){
 	for (int i = num_of_manually_allocated_datacenters + 1; i <= num_of_datacenters; ++i){
 		datacenters[i] = locate_new_datacenter(i, num_of_states, datacenters, distances);
 		/* display current latency */
@@ -97,9 +97,8 @@ int main(){
 
 	/* A map is used to store de distance matrix. 
 	 * States are identified with numbers from 1 to n, 
-	 * where n is the number of states to consider. 
-	 * Distance must be an integer number */
-	std::map<int, std::map<int, int> > distances;
+	 * where n is the number of states to consider. */
+	std::map<int, std::map<int, double> > distances;
 
 	/* A map is used to link each datacenter to a state. 
 	 * K = datacenter.
