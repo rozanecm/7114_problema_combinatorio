@@ -1,0 +1,30 @@
+Se decidió realizar la corrida sobre los siguientes estados:
+Alabama, Arizona, Arkansas, California, Colorado, Connecticut, Florida, Oregon
+
+Fuera de Florida(Datacenter A) y Oregon(Datacenter B), las 3 nuevas datacenters son las siguientes
+Datacenter C: Colorado        (77 YCei[Colorado]      1)
+Datacenter D: Arkansas        (83 YDei[Arkansas]      1)
+Datacenter E: Connecticut     (94 YEei[Connecticut]   1)
+
+La latencia global del sistema es: 1457.681632
+
+Las latencias de cada estado son las siguientes:
+Li[Alabama]       223.749             
+Li[Arizona]       817.982             
+Li[Arkansas]      0             
+Li[California]    415.951       
+Li[Colorado]      0             
+Li[Connecticut]   0             
+Li[Florida]       0             
+Li[Oregon]        0             
+
+Esto tiene sentido pues solo Alabama, Arizona y California no tienen un datacenter en el estado.
+
+El datacenter C de Colorado es el mas cercano a Arizona (la distancia del datacenter al estado es la misma que la latencia minima):
+DCi[Arizona]          817.982             0  
+
+El datacenter A de Florida es el mas cercano a Alabama (define la cota inferior al estado) 
+cota_inf_dcA[Alabama]   223.749       223.749    
+
+El datacenter B de Oregon es el mas cercano a California (define la cota inferior al estado) 
+cota_inf_dcB[California] 415.951       415.951      
