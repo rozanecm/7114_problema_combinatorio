@@ -1,6 +1,6 @@
 <?php
 $fila = 1;
-$arrayIncluded = ["Alabama", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Oregon", "Florida"];
+$arrayIncluded = ["Alabama","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon"];
 $array = array();
 if (($gestor = fopen("distances.csv", "r")) !== FALSE) {
     while (($datos = fgetcsv($gestor, 1000, ",")) !== FALSE) {
@@ -27,7 +27,7 @@ ksort($array);
 foreach($array as $key => $subarray){
 	ksort($subarray);
 }
-$fp = fopen('distances3.csv', 'w');
+$fp = fopen('distances4.csv', 'w');
 foreach($array as $key => $subarray){
 	foreach($subarray as $key2 => $value){
 		$data = $key.','.$key2.','.$value.PHP_EOL;
