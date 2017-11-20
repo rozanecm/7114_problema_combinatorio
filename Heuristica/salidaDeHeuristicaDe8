@@ -1,0 +1,44 @@
+Insert number of states
+Insert number of datacenters
+insert distance between state 1 and 2
+insert distance between state 1 and 3
+insert distance between state 1 and 4
+insert distance between state 1 and 5
+insert distance between state 1 and 6
+insert distance between state 1 and 7
+insert distance between state 1 and 8
+insert distance between state 2 and 3
+insert distance between state 2 and 4
+insert distance between state 2 and 5
+insert distance between state 2 and 6
+insert distance between state 2 and 7
+insert distance between state 2 and 8
+insert distance between state 3 and 4
+insert distance between state 3 and 5
+insert distance between state 3 and 6
+insert distance between state 3 and 7
+insert distance between state 3 and 8
+insert distance between state 4 and 5
+insert distance between state 4 and 6
+insert distance between state 4 and 7
+insert distance between state 4 and 8
+insert distance between state 5 and 6
+insert distance between state 5 and 7
+insert distance between state 5 and 8
+insert distance between state 6 and 7
+insert distance between state 6 and 8
+insert distance between state 7 and 8
+How many datacenters are manually allocated?
+Insert number of state where datacenter 1 should be.
+latency after datacenter 1 was allocated: 16236.8
+Insert number of state where datacenter 2 should be.
+latency after datacenter 2 was allocated: 6209.89
+latency after datacenter 3 located: 4902.32
+latency after datacenter 4 located: 2353.21
+latency after datacenter 5 located: 1937.26
+*** Final datacenter positions ****
+datacenter	1	located in state	7
+datacenter	2	located in state	8
+datacenter	3	located in state	6
+datacenter	4	located in state	5
+datacenter	5	located in state	4
