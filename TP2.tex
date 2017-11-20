@@ -1,0 +1,132 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{graphicx}
+\begin{document}
+\title{Modelos y Optimizaci\'on I\\ \large{Trabajo pr\'actico: Problema Combinatorio}}
+\author{de Valais, Ezequiel (94463)\and	Rozanec, Matias (97404)}
+\date{Octubre 2017}
+\maketitle
+\newpage
+% FIN PRESENTACION
+
+% Indice
+\tableofcontents
+\newpage
+
+% Consigna
+%\part{Consigna}
+\includepdf{EnunciadoProblemaCombinatorio.pdf}
+\newpage
+
+% Resolucion
+
+% Intro
+\part{Descripci\'on de la situaci\'on problem\'atica}
+Se trata de un problema de combinatoria, en el que habr\'a que incluir variables continuas y booleanas. \\
+En esta instancia podemos afirmar que habr\'a que considerar una variable \textit{latencia} que deber\'a ser una variable continua; as\'i como una variable booleana que indique si un determinado datacenter se encuentra instalado en un estado espec\'ifico.
+
+% Objetivo
+\part{Objetivo}
+Determinar en qu\'e estados van a estar los 3 nuevos datacenters ($DB, DC, DD$) durante un per\'iodo de tiempo para minimizar la latencia global del sistema.
+
+% Hipotesis
+\part{Hip\'otesis y supuestos}
+\begin{itemize}
+	\item Se instalar\'an los 3 datacenters puesto que cada datacenter agregado va a reducir la latencia.
+	\item Se tomar\'a un punto en cada estado. El mismo ser\'a referente para calcular las distancias entre estados y las respectivas latencias. No hay opci\'on de instalar un datacenter en otro punto del estado que el mencionado.
+	\item Para el c\'alculo se consideran \'unicamente las distancias, no la cantidad de usuarios por estado. O expresado de otra forma: para el modelo, la distribuci\'on de usuarios es uniforme a lo largo de todos los estados y en cada uno de los estados. 
+	\item No puede haber dos datacenters en un mismo estado.
+	\item Los costos de instalaci\'on y mantenimiento de datacenters, as\'i como cualquier otro costo que pueda implicar la instalaci\'on de los mismos, no ser\'an tenidos en cuenta por el modelo.
+\end{itemize}
+\newpage
+
+% Variables
+\part{Definici\'on de variables, incluyendo unidades}
+\begin{itemize}
+	\item $L_{i}$ : variable continua que indica la latencia (en ms) correspondiente al estado i. $\forall i \in [1, 48]$
+	\item $DC_{i}$ : variable continua que indica la distancia (en millas) del datacenter $C$ al estado $i$. (\'idem para datacenters $D$ y $E$. $DA_{i}$ y  $DB_{i}$ son datos conocidos). $\forall i \in [1, 48]$
+	\item $YA_{i}$ : variable bivalente que vale 0 cuando el estado $i$ tiene la menor latencia. (\'idem $B,C,D,E$)
+	\item $YCe_{i}$ : variable bivalente que vale 1 cuando el datacenter $C$ est\'a en el Estado $i$. (\'idem $D, E$)
+\end{itemize}
+% Constantes
+\section*{Constantes}
+\begin{itemize}
+\item $D_{ij}$: distancia entre estado $i$ y estado $j$.
+\item $M$: valor mayor a cualquier distancia posible. Su valor se definir\'a al momento de pasar el modelo a software.
+\end{itemize}
+
+\part{Modelo de Programaci\'on Lineal Continua}
+
+\begin{equation}
+	\sum_{i} YA{i} + YB_{i} + YC_i + YD_i + YE_i = 1
+\end{equation}
+
+\section{Menor Distancia}
+Cada $L_i$ tendr\'a como cota superior la distancia al datacenter m\'as pr\'oximo, y como cota inferior esa misma distancia en el caso de que el estado $i$ tenga la menor distancia.\\
+$M \rightarrow \infty$
+\begin{equation}
+DA_{i} - M * YA_{i} \leq L_{i} \leq DA_{i}, \quad \forall i \in [1, 48]
+\end{equation}
+\begin{equation}
+DB_{i} - M * YB_{i} \leq L_{i} \leq DB_{i}, \quad \forall i \in [1, 48]
+\end{equation}
+\begin{equation}
+DC_{i} - M * YC_{i} \leq L_{i} \leq DC_{i}, \quad \forall i \in [1, 48]
+\end{equation}
+\begin{equation}
+DD_{i} - M * YD_{i} \leq L_{i} \leq DD_{i}, \quad \forall i \in [1, 48]
+\end{equation}
+\begin{equation}
+DE_{i} - M * YE_{i} \leq L_{i} \leq DE_{i}, \quad \forall i \in [1, 48]
+\end{equation}
+
+\section{Asociaci\'on de Datacenter a estado}
+Se asegura de que cada datacenter pueda ser asignado \'unicamente a un estado.
+\begin{equation}
+\sum_{i=1}^{48} YCe_{i}  = 1
+\end{equation}
+\begin{equation}
+\sum_{i=1}^{48} YDe_{i}  = 1
+\end{equation}
+\begin{equation}
+\sum_{i=1}^{48} YEe_{i}  = 1
+\end{equation}
+
+\section{Asociaci\'on de distancia de un estado al datacenter correspondiente}
+\begin{equation}
+DC_{i} = 
+\sum_{j=1}^{48} D_{ij} * YCe_{j}          
+\end{equation}
+\begin{equation}
+DD_{i} = 
+\sum_{j=1}^{48} D_{ij} * YDe_{j}          
+\end{equation}
+\begin{equation}
+DE_{i} = 
+\sum_{j=1}^{48} D_{ij} * YEe_{j}, \quad \forall i \in [1, 48]
+\end{equation}
+
+\part{Funcional}
+\begin{equation}
+Z(min) =
+\sum_{i=1}^{48} L_{i} 
+\end{equation}
+
+\newpage
+% HEURISTICA
+\part{Heur\'istica}
+\lstset { %
+	language=C++,
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	basicstyle=\footnotesize,% basic font setting
+	linewidth=14cm,
+	showstringspaces=true,
+	numbers=left,
+	numberstyle=\tiny,
+	breaklines=true,
+	tabsize=4,
+}
+\lstinputlisting[frame=single]{Heuristica/heuristic.cpp}
+
+\end{document}
