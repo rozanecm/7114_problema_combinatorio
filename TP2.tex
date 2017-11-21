@@ -114,8 +114,100 @@ Z(min) =
 \end{equation}
 
 \newpage
+% modelo y salida
+\part{Modelo y salida}
+
+\
+\lstset { %
+	language=C++,
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	basicstyle=\footnotesize,% basic font setting
+	linewidth=14cm,
+	showstringspaces=true,
+	numbers=left,
+	numberstyle=\tiny,
+	breaklines=true,
+	tabsize=4,
+}
+\lstinputlisting[frame=single]{modelo/comb.mod}
+
+\newpage
+
+\
+\lstset { %
+	language=C++,
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	basicstyle=\footnotesize,% basic font setting
+	linewidth=14cm,
+	showstringspaces=true,
+	numbers=left,
+	numberstyle=\tiny,
+	breaklines=true,
+	tabsize=4,
+}
+\lstinputlisting[frame=single]{modelo/comb.sol}
+
+\newpage
+% Conclusiones
+\part{Conclusiones}
+
+Se decidi\'o realizar la corrida sobre los siguientes estados:
+\smallskip\\
+Alabama, Arizona, Arkansas, California, Colorado, Connecticut, Florida, Oregon
+\bigskip\\
+Fuera de Florida (Datacenter A) y Oregon (Datacenter B), las 3 nuevas datacenters son las siguientes
+\bigskip\\
+Datacenter C: Colorado        (77 YCei[Colorado]      1)
+\smallskip\\
+Datacenter D: Arkansas        (83 YDei[Arkansas]      1)     	
+\smallskip\\
+Datacenter E: Connecticut     (94 YEei[Connecticut]   1)   
+\bigskip\\
+La latencia global del sistema es: 1457.681632
+\bigskip\\
+Las latencias de cada estado son las siguientes:
+\bigskip\\
+Li[Alabama]       223.749        
+\smallskip\\     
+Li[Arizona]       817.982       
+\smallskip\\      
+Li[Arkansas]      0            
+\smallskip\\ 
+Li[California]    415.951     
+\smallskip\\  
+Li[Colorado]      0         
+\smallskip\\    
+Li[Connecticut]   0     
+\smallskip\\        
+Li[Florida]       0   
+\smallskip\\          
+Li[Oregon]        0             
+\bigskip\\
+Esto tiene sentido pues solo Alabama, Arizona y California no tienen un datacenter en el estado.
+\bigskip\\
+El datacenter C de Colorado es el mas cercano a Arizona (la distancia del datacenter al estado es la misma que su latencia m\'inima):
+\smallskip\\
+DCi[Arizona]          817.982 
+\bigskip\\
+El datacenter A de Florida es el mas cercano a Alabama (define la cota inferior a la latencia del estado) 
+\smallskip\\
+cota_inf_dcA[Alabama]   223.749  
+\bigskip\\
+El datacenter B de Oregon es el mas cercano a California (define la cota inferior a la latencia del estado) 
+\smallskip\\
+cota_inf_dcB[California] 415.951 
+\bigskip\\
+
+
+\newpage
 % HEURISTICA
 \part{Heur\'istica}
+\begin{verbatim}
+compilar: g++ -std=c++11 heuristic.cpp -o heuristic
+correr: cat distances.csv  | ./heuristic
+\end{verbatim}
+
+\
 \lstset { %
 	language=C++,
 	backgroundcolor=\color{black!5}, % set backgroundcolor
@@ -128,5 +220,58 @@ Z(min) =
 	tabsize=4,
 }
 \lstinputlisting[frame=single]{Heuristica/heuristic.cpp}
+
+
+
+
+
+\newpage
+% Conclusiones Heur\'istica
+\part{Resultados de Heur\'istica}
+
+Se corri\'o la heur\'istica con los 8 estados y se consiguieron los siguientes resultados:
+\begin{verbatim}
+Insert number of state where datacenter 1 should be.
+latency after datacenter 1 was allocated: 16236.8
+Insert number of state where datacenter 2 should be.
+latency after datacenter 2 was allocated: 6209.89
+latency after datacenter 3 located: 4902.32
+latency after datacenter 4 located: 2353.21
+latency after datacenter 5 located: 1937.26
+*** Final datacenter positions ****
+datacenter	1	located in state	7
+datacenter	2	located in state	8
+datacenter	3	located in state	6
+datacenter	4	located in state	5
+datacenter	5	located in state	4
+\end{verbatim}
+
+\smallskip\\
+Los datacenters seleccionador quedaron en los estados California Colorado y Conetticut (4, 5 y 6) dejando la latencia en 1937.26
+\smallskip\\
+Este resultado es peor comparado con el modelo de GLPK que dej\'o la latencia en 1457
+\bigskip\\
+
+
+Se corri\'o la heur\'istica con los 48 estados y se consiguieron los siguientes resultados:
+\begin{verbatim}
+Insert number of state where datacenter 1 should be.
+latency after datacenter 1 was allocated: 68827.2
+Insert number of state where datacenter 2 should be.
+latency after datacenter 2 was allocated: 44071.9
+latency after datacenter 3 located: 32303.7
+latency after datacenter 4 located: 27360.3
+latency after datacenter 5 located: 22764.1
+*** Final datacenter positions ****
+datacenter	1	located in state	8
+datacenter	2	located in state	35
+datacenter	3	located in state	48
+datacenter	4	located in state	47
+datacenter	5	located in state	46
+
+\end{verbatim}
+\smallskip\\
+Los datacenters seleccionador quedaron en los estados Wyoming, Wisconsin y west virginia dejando la latencia en 22764.1
+
 
 \end{document}
