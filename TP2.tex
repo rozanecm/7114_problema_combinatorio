@@ -59,7 +59,7 @@ Determinar en qu\'e estados van a estar los 3 nuevos datacenters ($DB, DC, DD$) 
 \part{Modelo de Programaci\'on Lineal Continua}
 
 \begin{equation}
-	\sum_{i} YA{i} + YB_{i} + YC_i + YD_i + YE_i = 1
+	YA{i} + YB_{i} + YC_i + YD_i + YE_i = 1 \qquad \forall i \in [1, 48]
 \end{equation}
 
 \section{Menor Distancia}
@@ -84,7 +84,7 @@ DE_{i} - M * YE_{i} \leq L_{i} \leq DE_{i}, \quad \forall i \in [1, 48]
 \section{Asociaci\'on de Datacenter a estado}
 Se asegura de que cada datacenter pueda ser asignado \'unicamente a un estado.
 \begin{equation}
-\sum_{i=1}^{48} YCe_{i}  = 1
+\sum_{i=1}^{48} YCe_{i}  = 1 
 \end{equation}
 \begin{equation}
 \sum_{i=1}^{48} YDe_{i}  = 1
@@ -95,12 +95,10 @@ Se asegura de que cada datacenter pueda ser asignado \'unicamente a un estado.
 
 \section{Asociaci\'on de distancia de un estado al datacenter correspondiente}
 \begin{equation}
-DC_{i} = 
-\sum_{j=1}^{48} D_{ij} * YCe_{j}          
+	DC_{i} = \sum_{j=1}^{48} D_{ij} * YCe_{j} \qquad \forall i \in [1, 48]
 \end{equation}
 \begin{equation}
-DD_{i} = 
-\sum_{j=1}^{48} D_{ij} * YDe_{j}          
+	DD_{i} = \sum_{j=1}^{48} D_{ij} * YDe_{j} \qquad \forall i \in [1, 48]
 \end{equation}
 \begin{equation}
 DE_{i} = 
